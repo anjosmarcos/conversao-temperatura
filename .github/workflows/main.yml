@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup do NodeJS
+        uses: actions/setup-node@v3.0.0
+        with: 
+          node-version: 16.13.2
+
+      - name: Instalação do Mocha e pacotes para Teste
+        run: 
+          cd src;
+          npm install -g mocha;
+          npm install
+
+      - name: Execução do Teste
+        run: mocha src/test/convert.js
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v5.1.0
+        with:
+          conetext: src
+          file: src/Dockerfile
+          push: true
+          tags: |
+            devmarcosanjos/aula-conversao-temperatura:v1
+            devmarcosanjos/aula-conversao-temperatura:latest
+          
+      
