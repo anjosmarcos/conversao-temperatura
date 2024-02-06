@@ -38,8 +38,8 @@ jobs:
       - name: Build and push Docker images
         uses: docker/build-push-action@v5.1.0
         with:
-          conetext: src
-          file: src/Dockerfile
+          conetext: ./src
+          file: ./src/Dockerfile
           push: true
           tags: |
             devmarcosanjos/aula-conversao-temperatura:v1
